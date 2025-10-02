@@ -12,25 +12,21 @@ jobs:
   build-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
 
       - name: Install JupyterLite + deps
         run: |
           python -m pip install --upgrade pip
-          # ✅ JupyterLite with the in-browser Pyodide kernel
           pip install "jupyterlite[pyodide]==0.6.4"
-          # Required so the contents/ folder is copied during build
           pip install "jupyter_server>=2,<3"
-          # Widgets manager (ipywidgets 8)
           pip install "ipywidgets>=8,<9" "jupyterlab_widgets>=3,<4"
-          # Optional niceties (silence warnings / faster archives)
           pip install "jupyterlab_server>=2,<3" "libarchive-c"
-
 
       - name: Build JupyterLite site
         env:
