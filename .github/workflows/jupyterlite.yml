@@ -23,13 +23,14 @@ jobs:
       - name: Install JupyterLite + deps
         run: |
           python -m pip install --upgrade pip
-          # Core JupyterLite + Pyodide kernel + widgets
-          pip install "jupyterlite==0.6.4" "jupyterlite-pyodide-kernel==0.6.4"
-          pip install "ipywidgets>=8,<9" "jupyterlab_widgets>=3,<4"
-          # REQUIRED for copying the content/ folder during build:
+          # JupyterLite + Pyodide kernel via extras (✅ correct)
+          pip install "jupyterlite[pyodide]==0.6.4"
+          # Needed so the 'contents' addon can copy your content/ folder
           pip install "jupyter_server>=2,<3"
-          # Optional (silences warnings about translations/icons; safe to include):
+          # Nice-to-haves (quiet warnings, faster archives)
           pip install "jupyterlab_server>=2,<3" "libarchive-c"
+          # Widgets in browser
+          pip install "ipywidgets>=8,<9" "jupyterlab_widgets>=3,<4"
 
       - name: Build JupyterLite site
         env:
