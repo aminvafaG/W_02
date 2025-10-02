@@ -1,0 +1,40 @@
+
+name: Build & Deploy JupyterLite
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install JupyterLite
+        run: |
+          python -m pip install --upgrade pip
+          pip install "jupyterlite[pyodide]==0.6.4" "ipywidgets>=8,<9" "jupyterlab_widgets>=3,<4"
+      
+      - name: Build JupyterLite site
+        env:
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          jupyter lite build --contents content --output-dir _output --base-url "/${{ env.REPO_NAME }}/"
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: _output
+          force_orphan: true
