@@ -1,0 +1,29 @@
+{
+  "content": [
+    {
+      "content": null,
+      "created": "2025-10-03T00:03:37.712938Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2025-10-03T00:03:14.475067Z",
+      "mimetype": "text/x-python",
+      "name": "utils.py",
+      "path": "py/utils.py",
+      "size": 4138,
+      "type": "file",
+      "writable": true
+    }
+  ],
+  "created": "2025-10-03T00:03:37.712938Z",
+  "format": "json",
+  "hash": null,
+  "hash_algorithm": null,
+  "last_modified": "2025-10-03T00:03:37.712938Z",
+  "mimetype": null,
+  "name": "py",
+  "path": "py",
+  "size": null,
+  "type": "directory",
+  "writable": true
+}
