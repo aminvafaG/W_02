@@ -26,10 +26,10 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install JupyterLite
+      - name: Install JupyterLite + Pyodide kernel
         run: |
           python -m pip install --upgrade pip
-          pip install "jupyterlite[lab]==0.6.4"
+          pip install "jupyterlite[lab]==0.6.4" jupyterlite-pyodide-kernel==0.6.1
 
       - name: Build JupyterLite site
         run: |
