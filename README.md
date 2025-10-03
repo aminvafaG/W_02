@@ -1,61 +1,42 @@
+# JupyterLite Dashboard (Pure Browser, No Server)
 
-# JupyterLite Dashboard (No Voilà/Voici)
+This project publishes a **dynamic dashboard** that runs entirely in your browser (Pyodide) with **no server**.  
+It uses **pure JupyterLite** (no Voila/Voici).
 
-A fully client-side dashboard that runs **entirely in the browser** via JupyterLite (Pyodide).
-- Dynamic filtering (ipywidgets)
-- Multiple plots (matplotlib)
-- No server, no Voilà/Voici
-- Synthetic dataset with tuning curves for 400 units
+## How to use
 
-## Quick start (locally)
+1. Push this repository to GitHub.
+2. Ensure **GitHub Pages** is enabled for the repo (Settings → Pages → Build and Deploy: GitHub Actions).
+3. The included workflow builds the site and deploys it to Pages.
 
-1. Install the JupyterLite CLI:
-   ```bash
-   pipx install jupyterlite==0.6.4
-   # or
-   pip install jupyterlite==0.6.4
-   ```
+Once deployed, open your dashboard at:
 
-2. Build the site:
-   ```bash
-   jupyter lite build --contents content --output-dir _output --base-url /
-   python -m http.server -d _output  # serve locally
-   ```
-
-3. Open in your browser:
-   - `http://localhost:8000/notebooks/?path=App.ipynb` (single-notebook app)
-   - or JupyterLab: `http://localhost:8000/lab/index.html?path=App.ipynb`
-
-## Deploy to GitHub Pages
-
-1. Push this repo to GitHub.
-2. Ensure GitHub Pages is set to deploy from the `gh-pages` branch.
-3. Keep the provided workflow `.github/workflows/jupyterlite.yml` as-is.
-
-After the first run, your site will be published at:
 ```
-https://<your-username>.github.io/<repo-name>/
-```
-Direct dashboard link (single-notebook app):
-```
-https://<your-username>.github.io/<repo-name>/notebooks/?path=App.ipynb
+https://<YOUR_GH_USERNAME>.github.io/<YOUR_REPO>/lab/index.html?path=App.ipynb
 ```
 
-> Note: This project hides notebook code cells by default. You can reveal them in JupyterLab if needed.
+> Tip: The notebook hides code by default. If you need to inspect code, open the first cell and set `SHOW_CODE = True`, then **Run All**.
 
-## Dataset
+## What’s inside?
 
-`content/data/units.json` includes
-- `orientations`: 36 angles (0..350°, step 10)
-- For each unit: layer (SG/G/IG), group (MUL/MXH), control/laser tuning (36 samples each),
-  OSI, half-bandwidth, means, peak orientation.
+- `content/App.ipynb` — the dashboard (filters + plots).  
+- `content/utils.py`   — data synthesis and helper functions (uses keyword-only args & dataclasses to mimic MATLAB `arguments`).  
+- `jupyter-lite.json`  — minimal app config.  
+- `.github/workflows/jupyterlite.yml` — GitHub Actions to build & deploy.
 
-## Advanced function patterns
+## Features
 
-See `content/py/utils.py` for examples mirroring MATLAB's `arguments` style via:
-- keyword-only parameters
-- positional-only parameters
-- dataclass-based "arguments" container
-- validation and simple helper utilities
+- Generates a **synthetic dataset** of V1-like units:
+  - Per unit: `layer` (SG/G/IG), `effect` (MUL/MXH), control & laser tuning curves, OSI, HBW, FR_mean.
+  - Tuning curves based on a **von Mises** profile; MXH laser effect produces center-suppression and flank facilitation.
+- **Interactive filters**:
+  - Layer (multi-select), OSI range, HBW range, effect type, and toggle “show mean curve”.
+- **Plots**:
+  - Scatter: OSI vs HBW for filtered units.
+  - Overlay: all filtered tuning curves (Control solid, Laser dashed) + optional mean.
+  - Detail: single-unit panel populated from the filtered set.
 
-Enjoy!
+## Notes
+
+- Pure JupyterLite cannot force “autorun on open.” If widgets do not appear immediately, click **Run → Run All** once.
+- Everything executes **in the browser**. No backend server, no Python on the host.
