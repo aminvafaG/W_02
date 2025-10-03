@@ -5,7 +5,7 @@
     "disabledExtensions": [],
     "settingsOverrides": {
       "@jupyterlab/apputils-extension:themes": {
-        "theme": "JupyterLab Light"
+        "theme": "JupyterLab Light" fff
       }
     }
   }
